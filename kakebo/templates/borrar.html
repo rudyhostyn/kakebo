@@ -1,0 +1,35 @@
+{% extends 'base.html'%}
+
+{% block titulo%}Borrar{% endblock %}
+   
+{% block contenido %}
+<h1>Borrar movimiento</h1>
+<div>
+    <div>
+        <label for="fecha">Fecha</label>
+        <input disabled type="text" name="fecha" value="{{movimiento.fecha}}"> <!--disabled para que n seppued escribir-->
+    </div>
+    <div >
+        <label for="concepto">Concepto</label>
+        <input disabled type="text" name="concepto" value="{{movimiento.concepto}}">
+    </div>
+    <div >
+        <label for="categoria">Categoria</label>
+        <input disabled type="text" name="categoria" value="{{movimiento.categoria}}">
+    </div>
+    <div >
+        <label for="cantidad">Cantidad</label>
+        <input disabled type="text" name="cantidad" value="{{movimiento.cantidad}}">
+    </div>
+    <div >
+        <label for="esGasto">Es gasto</label>
+        <input disabled type="text" name="esGasto" {% if movimiento.esGasto !=0 %} checked {% endif %}>
+    </div>
+        
+    <form action="/borrar/{{ movimiento.id }}" method="post">
+        <input type="submit" value="aceptar">
+        <a href="/">Cancelar</a>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,2 +1,5 @@
 venv/
-workspace.code-workspace
+**/__pycache__/
+.env
+movimientos.db
+config.py

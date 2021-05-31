@@ -1,0 +1,52 @@
+.mylabel{
+    width: 80px;
+    display: inline-block;
+    font-weight: bold;
+    text-align: left;
+}
+
+.msg-err{
+    font-size: 0.8em;
+    color:darkred;
+    font-weight: bold;
+    margin-left: 80px;
+}
+
+@keyframes blink-animation {
+    to {
+      visibility: hidden;
+    }
+  }
+  @-webkit-keyframes blink-animation {
+    to {
+      visibility: hidden;
+    }
+  }
+.popups {
+	font-weight: bold !important;
+	color: darkred !important;
+	animation: blink-animation 1s steps(5, start) infinite;
+    -webkit-animation: blink-animation 2s steps(5, start) infinite;
+}
+
+.popup {
+  background-color: floralwhite;
+}
+
+.popup p {
+  font-size: 1.2em;
+  text-align: center;
+}
+.popup p.aviso {
+  color: green;
+}
+.popup p.error {
+  color: darkred;
+}
+
+
+.btn {
+  font-size:0.8em;
+  font-weight: bold;
+  
+}
