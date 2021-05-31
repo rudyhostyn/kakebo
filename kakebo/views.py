@@ -38,10 +38,10 @@ def modificaTablaSQL(query, parametros):
 
 @app.route('/')
 def index():
-    movimientos = consultaSQL("Select T1.id, T1.fecha, T1.concepto, T1.categoria,T1.esGasto, T1.cantidad, T1.importe, \
-                    Sum(T2.importe) as Acumulado from movimientos T1 \
+    movimientos = consultaSQL("Select T1.id, T1.fecha, T1.concepto, T1.categoria,T1.esGasto, T1.cantidad, T1.saldo, \
+                    Sum(T2.saldo) as Acumulado from movimientos T1 \
                     join movimientos T2 on (T1.id >= T2.id) \
-                    Group By T1.id, T1.fecha, T1.concepto, T1.categoria,T1.esGasto, T1.cantidad, T1.importe \
+                    Group By T1.id, T1.fecha, T1.concepto, T1.categoria,T1.esGasto, T1.cantidad, T1.saldo \
                     Order by T1. id;")
     return render_template('movimientos.html', datos = movimientos)
 
@@ -94,7 +94,7 @@ def borrar(id):
 @app.route('/modificar/<int:id>', methods=['GET', 'POST'])
 def modificar(id):
     if request.method == 'GET':
-        filas = consultaSQL("SELECT * FROM movimientos WHERE id=?", [id])
+        filas = consultaSQL("SELECT * FROM movimientos WHERE id=?", [id]) #recoge los datos filtrados al hacer click en movimientos
         if len(filas) == 0:
             flash("El registro no existe", "error")
             return render_template('modificar.html', )
@@ -105,11 +105,21 @@ def modificar(id):
         
         return render_template('modificar.html', form=formulario)
     else:
-        modificaTablaSQL("UPDATE movimientos SET fecha =?, \
-            concepto =?,  categoria =?, esGasto =?, cantidad =? \
-                WHERE ID =?;", [formulario.fecha.data, formulario.concepto.data, formulario.categoria.data,
-                                formulario.esGasto.data, formulario.cantidad.data, formulario.id.data])    
-        return redirect(url_for('index'))   
+        formulario = MovimientosForm() #captura el movimiento que ha entrado tras modificar el formulario
+        if formulario.validate():
+            try:
+                modificaTablaSQL("UPDATE movimientos SET fecha =?, \
+                concepto =?,  categoria =?, esGasto =?, cantidad =? \
+                    WHERE ID =?;", [formulario.fecha.data, formulario.concepto.data, formulario.categoria.data,
+                                    formulario.esGasto.data, formulario.cantidad.data, formulario.id.data])
+                flash("Cambio realizado con éxito", 'aviso')#ponemos aviso para crear categoria y hacer mensaje    
+                return redirect(url_for('index'))
+            except sqlite3.Error as e:
+                print("Error en update:", e)
+                flash("Se ha producido un error en la base de datos", 'error') #ponemos error para crear categoria y hacer mensaje
+                return render_template('modificar.html', form=formulario)
+        else:
+            return render_template('modificar.html', form=formulario)   
 
  
-    
+   
