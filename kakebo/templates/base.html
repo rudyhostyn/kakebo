@@ -8,6 +8,35 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
     
 </head>
+<style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: rgb(192, 69, 69);
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white !important;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #04AA6D;
+}
+</style>
 <body>
     <ul>
         <li><a href="http://localhost:5000/">Home</a></li>
